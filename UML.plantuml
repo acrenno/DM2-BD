@@ -1,0 +1,68 @@
+@startuml
+class Utilisateur {
+    - id : int
+    - nom : String
+    - email : String
+    - motDePasse : String
+    + creerEvenement(titre : String, icone : String) : Evenement
+    + inviterPersonne(email : String)
+}
+
+class Evenement {
+    - id : int
+    - titre : String
+    - icone : String
+    - devise : String
+    - dateCreation : Date
+    + ajouterDepense(depense : Depense)
+    + cloturer()
+}
+
+class Participant {
+    - id : int
+    - nom : String
+    - email : String
+}
+
+class Depense {
+    - id : int
+    - titre : String
+    - montant : float
+    - devise : String
+    - note : String
+    - date : Date
+    - etiquette : String
+    - photos : List<String>
+    + definirRepartition(type : String, details : Map<Participant, float>)
+}
+
+class MoyensDePaiement {
+    - id : int
+    - type : String
+    - details : String
+}
+
+class Cagnotte {
+    - id : int
+    - montant : float
+    + alimenter(montant : float)
+    + distribuerRestant()
+}
+
+class PariteDevise {
+    - deviseSource : String
+    - deviseCible : String
+    - taux : float
+    - date : Date
+}
+
+Utilisateur "1" -- "*" Evenement : "cree"
+Evenement "1" -- "*" Participant : "contient"
+Participant "*" -- "*" Depense : "associe"
+Evenement "1" -- "*" Depense : "a"
+Depense "1" -- "*" Participant : "repartie vers"
+Depense "1" -- "*" MoyensDePaiement : "peut etre remboursé par"
+Evenement "1" -- "1" Cagnotte : "associe a"
+Cagnotte "*" -- "1" Participant : "distribue"
+PariteDevise "*" -- "*" Depense : "concerne"
+@enduml
